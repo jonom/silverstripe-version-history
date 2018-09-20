@@ -70,7 +70,7 @@ class VersionHistoryExtension extends DataExtension
             // Compare specified version with previous. Fallback to latest version if none specified.
             $filter = '';
             if ($versionID) {
-                $filter = "\"ID\" <= '$versionID'";
+                $filter = "\"Version\" <= '$versionID'";
             }
             $versions = $this->owner->allVersions($filter, '', 2);
             if ($versions->count() === 0) {
