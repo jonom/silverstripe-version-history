@@ -9,12 +9,14 @@ class VersionHistoryExtension extends DataExtension
             // URL for ajax request
             $urlBase = Director::absoluteURL('cms-version-history/compare/'.$this->owner->ClassName.'/'.$this->owner->ID.'/');
             $fields->findOrMakeTab('Root.VersionHistory', 'History');
-            $fields->addFieldToTab('Root.VersionHistory', LiteralField::create('VersionsHistoryMenu',
+            $fields->addFieldToTab('Root.VersionHistory', LiteralField::create(
+                'VersionsHistoryMenu',
                 "<div id=\"VersionHistoryMenu\" class=\"cms-content-tools\" data-url-base=\"$urlBase\">"
                 .$vFields->forTemplate()
                 .'</div>'
             ));
-            $fields->addFieldToTab('Root.VersionHistory', LiteralField::create('VersionComparisonSummary',
+            $fields->addFieldToTab('Root.VersionHistory', LiteralField::create(
+                'VersionComparisonSummary',
                 '<div id="VersionComparisonSummary">'
                 .$this->owner->VersionComparisonSummary()
                 .'</div>'
@@ -76,8 +78,19 @@ class VersionHistoryExtension extends DataExtension
             if ($versions->count() === 0) {
                 return false;
             }
-            $toRecord = $versions->first();
-            $fromRecord = ($versions->count() === 1) ? null : $versions->last();
+            $toRecord = Versioned::get_version(
+                $this->owner->class,
+                $this->owner->ID,
+                $versions->first()->Version
+            );
+
+            $fromRecord = ($versions->count() === 1)
+                ? null
+                : Versioned::get_version(
+                    $this->owner->class,
+                    $this->owner->ID,
+                    $versions->last()->Version
+                );
         }
 
         if (!$toRecord) {
@@ -104,9 +117,22 @@ class VersionHistoryExtension extends DataExtension
         }
         unset($fieldNames['Version']);
 
+        // Hide a some fields from the version history.
+        $hiddenFields = Config::inst()->get(
+            $this->owner->class,
+            'version_history_hidden_fields'
+        );
+        if (!empty($hiddenFields)) {
+            foreach ($hiddenFields as $hiddenField) {
+                if (isset($fieldNames[$hiddenField])) {
+                    unset($fieldNames[$hiddenField]);
+                }
+            }
+        }
+
         // Compare values between records and make them look nice
         foreach ($fieldNames as $fieldName => $fieldInfo) {
-            $compareValue = ($fromRecord && $toRecord->$fieldInfo['FieldName'] !== $fromRecord->$fieldInfo['FieldName'])
+            $compareValue = ($fromRecord && $toRecord->{$fieldInfo['FieldName']} !== $fromRecord->{$fieldInfo['FieldName']})
                 ? Diff::compareHTML($this->getVersionFieldValue($fromRecord, $fieldInfo), $this->getVersionFieldValue($toRecord, $fieldInfo))
                 : $this->getVersionFieldValue($toRecord, $fieldInfo);
             $field = ReadonlyField::create("VersionHistory$fieldName", $this->owner->fieldLabel($fieldName), $compareValue);

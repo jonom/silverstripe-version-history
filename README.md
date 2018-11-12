@@ -31,6 +31,21 @@ MyClass:
 
 This module currently doesn't distinguish between staged and published versions, nor does it support rolling back to a previous version, because I'm using it simply to track changes. If you want to expand the functionality though, feel free to open a pull request!
 
+### Hide some fields from the history tab
+
+If you want to hide some fields from the history tab, you can set the `version_history_hidden_fields` configuration attribute on your DataObject. The following YML configuration applies the `VersionHistoryExtenion` to the `Member` DataObject, but hides sensitive information like the `Salt` and `Password` fields.
+
+```yml
+Member:
+  extensions:
+    - Versioned("Stage")
+    - VersionHistoryExtension
+  version_history_hidden_fields:
+    - Password
+    - PasswordEncryption
+    - Salt
+```
+
 ## Maintainer contact
 
 [jonathonmenz.com](http://jonathonmenz.com)
