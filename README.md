@@ -48,11 +48,10 @@ Member:
 
 ## Maintainer contact
 
-[jonathonmenz.com](http://jonathonmenz.com)
+[Jono Menz](https://jonomenz.com)
 
-## Tip jar
+## Sponsorship
 
-If this module helped you out and you want to say thanks, you're welcome to make a small donation or shout me a steam game.
+If you want to boost morale of the maintainer you're welcome to make a small monthly donation through [**GitHub**](https://github.com/sponsors/jonom), or a one time donation through [**PayPal**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z5HEZREZSKA6A). ❤️ Thank you!
 
-[![Donate via PayPal](http://jonathonmenz.com/static/github/donate_paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z5HEZREZSKA6A)
-[![Shout a game](http://jonathonmenz.com/static/github/donate_steam.png)](https://steamcommunity.com/profiles/76561198039777765/wishlist)
+Please also feel free to [get in touch](https://jonomenz.com) if you want to hire the maintainer to develop a new feature, or discuss another opportunity.
